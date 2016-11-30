@@ -41,11 +41,12 @@ def numColors():
         except:
             pass
 
-
-        filename = img.split('/')[-1]
-        local = OUT_DIR+filename
-        urllib.request.urlretrieve(img, local)
-
+        try:
+            filename = img.split('/')[-1]
+            local = OUT_DIR+filename
+            urllib.request.urlretrieve(img, local)
+        except:
+            return abort_with_message("bad image")
 
         try:
             colors = subprocess.run(["/usr/bin/identify", "-format",
