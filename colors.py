@@ -41,12 +41,11 @@ def numColors():
         except:
             pass
 
-        try:
-            filename = img.split('/')[-1]
-            local = OUT_DIR+filename
-            urllib.request.urlretrieve(img, local)
-        except:
-            return abort_with_message("bad image")
+
+        filename = img.split('/')[-1]
+        local = OUT_DIR+filename
+        urllib.request.urlretrieve(img, local)
+
 
         try:
             colors = subprocess.run(["/usr/bin/identify", "-format",
@@ -62,7 +61,7 @@ def numColors():
                                          'colors': {'N': n}
                                          })
                 except:
-                    return"shit"
+                    return abort_with_message("cache failure")
 
                 return colors.stdout
             else:
