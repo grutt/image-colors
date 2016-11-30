@@ -36,8 +36,8 @@ def numColors():
     else:
         try:
             cached = client.get_item(TableName='cached_imgs',
-                                     Key={'url': {'S': 'http://hello.com'}})
-            return int(cached['Item']['colors']['N'])
+                                     Key={'url': {'S': img}})
+            return str(int(cached['Item']['colors']['N']))
         except:
             pass
 
@@ -54,6 +54,16 @@ def numColors():
                                     stdout=subprocess.PIPE)
             os.remove(local)
             if(colors.returncode == 0):
+                try:
+                    n = str(int(colors.stdout))
+                    client.put_item(TableName='cached_imgs',
+                                    Item={
+                                         'url': {'S': img},
+                                         'colors': {'N': n}
+                                         })
+                except:
+                    return"shit"
+
                 return colors.stdout
             else:
                 return abort_with_message("img failed")
